@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useState, type CSSProperties } from "react";
 import { ArrowRight, Instagram, ProductCard, SectionHeading } from "@/components/storefront";
 import { Button } from "@/components/ui/button";
 import { brand, journalPosts, products, testimonials, whatsappUrl } from "@/data/store";
@@ -57,6 +58,22 @@ const marqueeItems = [
   "Atelier Appointments",
 ];
 
+const clientReviews = [
+  ...testimonials,
+  {
+    name: "Zainab",
+    location: "Kaduna",
+    review:
+      "The finishing was elegant and the silhouette felt effortless. I wore it all evening with complete confidence.",
+  },
+  {
+    name: "Nkechi",
+    location: "Port Harcourt",
+    review:
+      "HANS understood the occasion immediately. The piece felt personal, polished and beautifully made.",
+  },
+];
+
 function ArchImage({ src, alt, className = "" }: { src: string; alt: string; className?: string }) {
   return (
     <div className={`arch-frame ${className}`}>
@@ -70,10 +87,63 @@ function ArchImage({ src, alt, className = "" }: { src: string; alt: string; cla
 function Home() {
   const featured = products.filter((p) => p.featured).slice(0, 4);
   const newIn = products.filter((p) => p.newArrival).slice(0, 4);
+  const [heroProgress, setHeroProgress] = useState(0);
+
+  useEffect(() => {
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const revealTargets = Array.from(
+      document.querySelectorAll<HTMLElement>(
+        "main > section:not(.home-hero), .product-card, .arch-frame",
+      ),
+    );
+
+    if (reducedMotion) {
+      revealTargets.forEach((target) => target.classList.add("is-visible"));
+      return;
+    }
+
+    let frame = 0;
+    const updateHeroProgress = () => {
+      cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(() => {
+        setHeroProgress(Math.min(window.scrollY / 520, 1));
+      });
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { rootMargin: "0px 0px -18% 0px", threshold: 0.15 },
+    );
+
+    revealTargets.forEach((target, index) => {
+      target.classList.add("reveal-on-scroll");
+      target.style.setProperty("--reveal-delay", `${Math.min(index % 4, 3) * 90}ms`);
+      observer.observe(target);
+    });
+
+    updateHeroProgress();
+    window.addEventListener("scroll", updateHeroProgress, { passive: true });
+
+    return () => {
+      cancelAnimationFrame(frame);
+      observer.disconnect();
+      window.removeEventListener("scroll", updateHeroProgress);
+    };
+  }, []);
 
   return (
     <>
-      <section className="home-hero relative isolate overflow-hidden border-b border-border bg-primary text-primary-foreground">
+      <section
+        className="home-hero relative isolate overflow-hidden border-b border-border bg-primary text-primary-foreground"
+        style={{ "--hero-progress": heroProgress } as CSSProperties}
+      >
         <img
           src={heroLady}
           alt="Woman wearing a gold floral HANS Apparel ready-to-wear look"
@@ -87,11 +157,32 @@ function Home() {
               className="hero-title mt-7 max-w-4xl font-altaca text-[clamp(3rem,6vw,6.8rem)] leading-[0.93] text-primary-foreground max-sm:text-[clamp(2.5rem,12vw,3.4rem)]"
               aria-label="Elegant African Fashion for Every Occasion"
             >
-              <span className="block">Elegant</span>
-              <span className="block">African</span>
-              <span className="block whitespace-nowrap">Fashion for</span>
-              <span className="block">Every</span>
-              <span className="block">Occasion</span>
+              <span className="hero-word block" style={{ "--word-index": 0 } as CSSProperties}>
+                Elegant
+              </span>
+              <span className="hero-word block" style={{ "--word-index": 1 } as CSSProperties}>
+                African
+              </span>
+              <span className="block whitespace-nowrap">
+                <span
+                  className="hero-word inline-block"
+                  style={{ "--word-index": 2 } as CSSProperties}
+                >
+                  Fashion
+                </span>{" "}
+                <span
+                  className="hero-word inline-block"
+                  style={{ "--word-index": 3 } as CSSProperties}
+                >
+                  for
+                </span>
+              </span>
+              <span className="hero-word block" style={{ "--word-index": 4 } as CSSProperties}>
+                Every
+              </span>
+              <span className="hero-word block" style={{ "--word-index": 5 } as CSSProperties}>
+                Occasion
+              </span>
             </h1>
             <div className="hero-rule mt-8 h-px w-28" />
             <div className="mt-8 flex flex-wrap gap-3 max-sm:max-w-[350px] max-sm:[&>a]:w-full">
@@ -116,7 +207,7 @@ function Home() {
         </div>
       </section>
 
-      <section className="px-5 pt-12 pb-24 lg:px-10 lg:pt-14">
+      <section className="responsive-section px-5 pt-12 pb-24 lg:px-10 lg:pt-14">
         <div className="mx-auto grid max-w-[1440px] gap-14 lg:grid-cols-2 lg:items-center">
           <ArchImage
             src={houseModel}
@@ -142,10 +233,10 @@ function Home() {
         </div>
       </section>
 
-      <section className="px-5 pb-24 lg:px-10">
+      <section className="responsive-section px-5 pb-24 lg:px-10">
         <div className="mx-auto max-w-[1440px]">
           <SectionHeading eyebrow="Shop by category" title={"Find your\noccasion"} />
-          <div className="grid gap-4 lg:grid-cols-4 lg:grid-rows-2">
+          <div className="category-grid grid gap-4 lg:grid-cols-4 lg:grid-rows-2">
             {categories.map((c) => (
               <Link
                 key={c.label}
@@ -181,7 +272,7 @@ function Home() {
         </div>
       </section>
 
-      <section className="px-5 pb-24 lg:px-10">
+      <section className="responsive-section px-5 pb-24 lg:px-10">
         <div className="mx-auto max-w-[1440px]">
           <SectionHeading
             eyebrow="Just in"
@@ -194,7 +285,7 @@ function Home() {
               </Button>
             }
           />
-          <div className="grid grid-cols-2 gap-x-4 gap-y-10 lg:grid-cols-4">
+          <div className="product-grid grid grid-cols-2 gap-x-4 gap-y-10 lg:grid-cols-4">
             {newIn.map((p) => (
               <ProductCard key={p.id} product={p} />
             ))}
@@ -230,10 +321,10 @@ function Home() {
         </div>
       </section>
 
-      <section className="px-5 py-24 lg:px-10">
+      <section className="responsive-section px-5 py-24 lg:px-10">
         <div className="mx-auto max-w-[1440px]">
           <SectionHeading eyebrow="Best sellers" title="Pieces our clients return for" />
-          <div className="grid grid-cols-2 gap-x-4 gap-y-10 lg:grid-cols-4">
+          <div className="product-grid grid grid-cols-2 gap-x-4 gap-y-10 lg:grid-cols-4">
             {featured.map((p) => (
               <ProductCard key={p.id} product={p} />
             ))}
@@ -241,7 +332,7 @@ function Home() {
         </div>
       </section>
 
-      <section className="bg-secondary/60 px-5 py-24 lg:px-10">
+      <section className="responsive-section bg-secondary/60 px-5 py-24 lg:px-10">
         <div className="mx-auto grid max-w-[1440px] gap-14 lg:grid-cols-2 lg:items-center">
           <video
             src={craftVideo}
@@ -266,7 +357,7 @@ function Home() {
         </div>
       </section>
 
-      <section className="bg-primary px-5 py-24 text-primary-foreground lg:px-10">
+      <section className="responsive-section bg-primary px-5 py-24 text-primary-foreground lg:px-10">
         <div className="mx-auto max-w-[1440px]">
           <p className="eyebrow text-brand-sand">Bespoke</p>
           <h2 className="section-title mt-4 max-w-3xl">Commission something made only for you</h2>
@@ -289,23 +380,34 @@ function Home() {
         </div>
       </section>
 
-      <section className="px-5 py-24 lg:px-10">
+      <section className="responsive-section overflow-hidden px-5 py-24 lg:px-10">
         <div className="mx-auto max-w-[1440px]">
           <SectionHeading eyebrow="Clients" title="In their words" />
-          <div className="grid gap-8 lg:grid-cols-3">
-            {testimonials.map((t) => (
-              <figure key={t.name} className="border border-border bg-card p-8">
-                <blockquote className="font-display text-xl leading-snug">"{t.review}"</blockquote>
-                <figcaption className="mt-6 text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                  {t.name} | {t.location}
-                </figcaption>
-              </figure>
+          <div className="testimonial-slider" aria-label="Customer reviews">
+            <div className="testimonial-track">
+              {[...clientReviews, ...clientReviews].map((t, index) => (
+                <figure key={`${t.name}-${index}`} className="testimonial-card">
+                  <blockquote className="font-display text-xl leading-snug">
+                    "{t.review}"
+                  </blockquote>
+                  <figcaption className="mt-6 text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
+                    {t.name} | {t.location}
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </div>
+          <div className="sr-only">
+            {clientReviews.map((t) => (
+              <p key={t.name}>
+                {t.name}, {t.location}: {t.review}
+              </p>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="px-5 pb-24 lg:px-10">
+      <section className="responsive-section px-5 pb-24 lg:px-10">
         <div className="mx-auto max-w-[1440px]">
           <SectionHeading
             eyebrow="Journal"
@@ -328,7 +430,7 @@ function Home() {
         </div>
       </section>
 
-      <section className="px-5 pb-24 lg:px-10">
+      <section className="responsive-section px-5 pb-24 lg:px-10">
         <div className="mx-auto max-w-[1440px]">
           <SectionHeading eyebrow={brand.instagram} title="Follow the house" />
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -349,7 +451,7 @@ function Home() {
         </div>
       </section>
 
-      <section className="border-y border-border bg-secondary/60 px-5 py-24 text-center lg:px-10">
+      <section className="responsive-section border-y border-border bg-secondary/60 px-5 py-24 text-center lg:px-10">
         <h2 className="section-title mx-auto max-w-3xl">Let's dress your next occasion</h2>
         <p className="mx-auto mt-5 max-w-xl text-muted-foreground">
           Message us on WhatsApp for sizing, availability or a bespoke commission.
