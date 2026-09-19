@@ -1,10 +1,36 @@
 import { Link } from "@tanstack/react-router";
 import { createContext, useContext, useState, type ReactNode } from "react";
-import { ArrowRight, Heart, Instagram, Menu, MessageCircle, Minus, Play, Plus, Search, ShoppingBag, X } from "lucide-react";
+import {
+  ArrowRight,
+  Heart,
+  Instagram,
+  Menu,
+  MessageCircle,
+  Minus,
+  Play,
+  Plus,
+  Search,
+  ShoppingBag,
+  X,
+} from "lucide-react";
 import logo from "@/assets/hans-logo-uploaded.png";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { brand, formatPrice, products, whatsappUrl, type Product } from "@/data/store";
 
 type StoreContextValue = {
@@ -26,7 +52,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         cart,
         wishlist,
         addToCart: (p) => setCart((c) => [...c, p]),
-        toggleWishlist: (id) => setWishlist((w) => (w.includes(id) ? w.filter((item) => item !== id) : [...w, id])),
+        toggleWishlist: (id) =>
+          setWishlist((w) => (w.includes(id) ? w.filter((item) => item !== id) : [...w, id])),
       }}
     >
       {children}
@@ -50,7 +77,9 @@ const nav = [
 
 function SearchDialog() {
   const [query, setQuery] = useState("");
-  const results = query ? products.filter((p) => p.name.toLowerCase().includes(query.toLowerCase())) : [];
+  const results = query
+    ? products.filter((p) => p.name.toLowerCase().includes(query.toLowerCase()))
+    : [];
 
   return (
     <Dialog>
@@ -61,7 +90,9 @@ function SearchDialog() {
       </DialogTrigger>
       <DialogContent className="max-w-2xl border-champagne bg-background p-8">
         <DialogHeader>
-          <DialogTitle className="font-display text-3xl font-normal">Search HANS Apparel</DialogTitle>
+          <DialogTitle className="font-display text-3xl font-normal">
+            Search HANS Apparel
+          </DialogTitle>
           <DialogDescription>Find a piece by name or style.</DialogDescription>
         </DialogHeader>
         <label className="sr-only" htmlFor="site-search">
@@ -76,7 +107,12 @@ function SearchDialog() {
           className="h-14 border-b border-primary bg-transparent text-lg outline-none placeholder:text-muted-foreground"
         />
         {results.map((p) => (
-          <Link key={p.id} to="/product/$slug" params={{ slug: p.slug }} className="flex items-center gap-4 border-b border-border py-3">
+          <Link
+            key={p.id}
+            to="/product/$slug"
+            params={{ slug: p.slug }}
+            className="flex items-center gap-4 border-b border-border py-3"
+          >
             <img src={p.images[0]} alt="" className="h-16 w-12 object-cover" />
             <span>{p.name}</span>
             <span className="ml-auto text-sm">{formatPrice(p.price)}</span>
@@ -93,7 +129,12 @@ function CartSheet() {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" aria-label={`Shopping bag with ${cart.length} items`} className="relative">
+        <Button
+          variant="ghost"
+          size="icon"
+          aria-label={`Shopping bag with ${cart.length} items`}
+          className="relative"
+        >
           <ShoppingBag />
           {cart.length > 0 && (
             <span className="absolute right-0 top-0 grid h-4 min-w-4 place-items-center bg-brand-accent px-1 text-[9px] text-primary-foreground">
@@ -105,7 +146,11 @@ function CartSheet() {
       <SheetContent className="w-full bg-background sm:max-w-md">
         <SheetHeader>
           <SheetTitle className="font-display text-3xl font-normal">Your bag</SheetTitle>
-          <SheetDescription>{cart.length ? `${cart.length} piece${cart.length > 1 ? "s" : ""} selected` : "Your bag is ready for something memorable."}</SheetDescription>
+          <SheetDescription>
+            {cart.length
+              ? `${cart.length} piece${cart.length > 1 ? "s" : ""} selected`
+              : "Your bag is ready for something memorable."}
+          </SheetDescription>
         </SheetHeader>
         <div className="mt-8 space-y-5">
           {cart.map((p, i) => (
@@ -124,7 +169,13 @@ function CartSheet() {
           ))}
           {cart.length > 0 && (
             <Button asChild className="shine-button w-full">
-              <a href={whatsappUrl(`Hello HANS Apparel, I would like to order: ${cart.map((p) => p.name).join(", ")}`)} target="_blank" rel="noreferrer">
+              <a
+                href={whatsappUrl(
+                  `Hello HANS Apparel, I would like to order: ${cart.map((p) => p.name).join(", ")}`,
+                )}
+                target="_blank"
+                rel="noreferrer"
+              >
                 Complete on WhatsApp
               </a>
             </Button>
@@ -138,10 +189,14 @@ function CartSheet() {
 export function Header() {
   return (
     <>
-      <header className="sticky top-0 z-40 border-b border-border/70 bg-background/95 backdrop-blur">
-        <div className="mx-auto flex h-[76px] max-w-[1440px] items-center justify-between px-5 lg:px-10">
-          <Link to="/" aria-label="HANS Apparel home" className="block h-12 w-36 overflow-hidden">
-            <img src={logo} alt="HANS Apparel" className="h-full w-full scale-[1.36] object-contain" />
+      <header className="fixed inset-x-0 top-0 z-40 border-b border-border/70 bg-background/95 backdrop-blur">
+        <div className="mx-auto flex h-[68px] max-w-[1440px] items-center justify-between px-5 lg:px-10">
+          <Link to="/" aria-label="HANS Apparel home" className="block h-12 w-40 overflow-hidden">
+            <img
+              src={logo}
+              alt="HANS Apparel"
+              className="h-full w-full scale-[1.24] object-contain"
+            />
           </Link>
           <nav aria-label="Main navigation" className="hidden items-center gap-7 lg:flex">
             {nav.map(([label, to]) => (
@@ -152,7 +207,12 @@ export function Header() {
           </nav>
           <div className="flex items-center gap-0.5">
             <SearchDialog />
-            <Button variant="ghost" size="icon" aria-label="Wishlist" className="hidden sm:inline-flex">
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label="Wishlist"
+              className="hidden sm:inline-flex"
+            >
               <Heart />
             </Button>
             <CartSheet />
@@ -167,12 +227,20 @@ export function Header() {
                   <SheetTitle className="sr-only">Navigation</SheetTitle>
                   <SheetDescription className="sr-only">Browse HANS Apparel</SheetDescription>
                 </SheetHeader>
-                <div className="mt-12 h-20 w-56 overflow-hidden">
-                  <img src={logo} alt="HANS Apparel" className="h-full w-full scale-[1.2] object-contain invert brightness-0" />
+                <div className="mt-12 h-24 w-64 overflow-hidden">
+                  <img
+                    src={logo}
+                    alt="HANS Apparel"
+                    className="h-full w-full scale-[1.16] object-contain invert brightness-0"
+                  />
                 </div>
                 <nav className="mt-12 flex flex-col">
                   {nav.map(([label, to]) => (
-                    <Link key={`${label}-${to}`} to={to} className="border-b border-primary-foreground/20 py-4 font-display text-3xl">
+                    <Link
+                      key={`${label}-${to}`}
+                      to={to}
+                      className="border-b border-primary-foreground/20 py-4 font-display text-3xl"
+                    >
                       {label}
                     </Link>
                   ))}
@@ -193,7 +261,11 @@ export function ProductCard({ product }: { product: Product }) {
     <article className="product-card group min-w-0">
       <div className="product-card-stage">
         <div className="product-card-inner">
-          <Link to="/product/$slug" params={{ slug: product.slug }} className="product-card-face product-card-front">
+          <Link
+            to="/product/$slug"
+            params={{ slug: product.slug }}
+            className="product-card-face product-card-front"
+          >
             <img
               src={product.images[0]}
               alt={`${product.name} by HANS Apparel`}
@@ -207,7 +279,11 @@ export function ProductCard({ product }: { product: Product }) {
             <p className="eyebrow text-brand-sand">{product.collection}</p>
             <h3 className="mt-4 font-display text-3xl leading-tight">{product.name}</h3>
             <p className="mt-4 text-sm text-primary-foreground/75">{product.description}</p>
-            <Button onClick={() => addToCart(product)} variant="light" className="shine-button mt-auto w-full">
+            <Button
+              onClick={() => addToCart(product)}
+              variant="light"
+              className="shine-button mt-auto w-full"
+            >
               Add to bag
             </Button>
           </div>
@@ -223,7 +299,9 @@ export function ProductCard({ product }: { product: Product }) {
         </Button>
       </div>
       <div className="pt-4">
-        <p className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">{product.category}</p>
+        <p className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+          {product.category}
+        </p>
         <div className="mt-1 flex items-start justify-between gap-3">
           <Link to="/product/$slug" params={{ slug: product.slug }} className="font-medium">
             {product.name}
@@ -235,7 +313,17 @@ export function ProductCard({ product }: { product: Product }) {
   );
 }
 
-export function SectionHeading({ eyebrow, title, copy, action }: { eyebrow?: string; title: string; copy?: string; action?: ReactNode }) {
+export function SectionHeading({
+  eyebrow,
+  title,
+  copy,
+  action,
+}: {
+  eyebrow?: string;
+  title: string;
+  copy?: string;
+  action?: ReactNode;
+}) {
   return (
     <div className="mb-10 flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
       <div>
@@ -248,12 +336,22 @@ export function SectionHeading({ eyebrow, title, copy, action }: { eyebrow?: str
   );
 }
 
-export function PageHero({ eyebrow, title, copy }: { eyebrow: string; title: string; copy: string }) {
+export function PageHero({
+  eyebrow,
+  title,
+  copy,
+}: {
+  eyebrow: string;
+  title: string;
+  copy: string;
+}) {
   return (
     <section className="border-b border-border bg-secondary/50 px-5 py-20 lg:px-10 lg:py-28">
       <div className="mx-auto max-w-[1440px]">
         <p className="eyebrow">{eyebrow}</p>
-        <h1 className="mt-4 max-w-4xl font-display text-5xl leading-[0.95] sm:text-7xl lg:text-[84px]">{title}</h1>
+        <h1 className="mt-4 max-w-4xl font-display text-5xl leading-[0.95] sm:text-7xl lg:text-[84px]">
+          {title}
+        </h1>
         <p className="mt-6 max-w-xl text-lg text-muted-foreground">{copy}</p>
       </div>
     </section>
@@ -262,11 +360,18 @@ export function PageHero({ eyebrow, title, copy }: { eyebrow: string; title: str
 
 export function Footer() {
   return (
-    <footer id="site-footer" className="bg-primary px-5 pb-8 pt-20 text-primary-foreground lg:px-10">
+    <footer
+      id="site-footer"
+      className="bg-primary px-5 pb-8 pt-20 text-primary-foreground lg:px-10"
+    >
       <div className="mx-auto grid max-w-[1440px] gap-12 lg:grid-cols-[1.4fr_repeat(4,1fr)]">
         <div>
           <div className="flex items-end gap-3">
-            <img src={logo} alt="HANS Apparel" className="h-24 w-60 object-contain invert brightness-0" />
+            <img
+              src={logo}
+              alt="HANS Apparel"
+              className="h-24 w-60 object-contain invert brightness-0"
+            />
           </div>
           <p className="mt-5 max-w-xs text-sm text-primary-foreground/70">
             Ready-to-wear, bespoke and exclusive African fashion from Abuja.
@@ -290,6 +395,7 @@ export function Footer() {
       </div>
       <div className="mx-auto mt-16 flex max-w-[1440px] flex-col justify-between gap-3 border-t border-primary-foreground/15 pt-6 text-[10px] uppercase tracking-[0.15em] text-primary-foreground/55 sm:flex-row">
         <span>Copyright HANS Apparel. All rights reserved.</span>
+        <span>Designed by Seraczone Technology Limited</span>
         <span>{brand.instagram}</span>
       </div>
     </footer>

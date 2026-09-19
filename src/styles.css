@@ -17,6 +17,7 @@
   --radius-2xl: 0px;
   --radius-3xl: 0px;
   --radius-4xl: 0px;
+  --font-altaca: "Altaca", "Playfair Display", Georgia, serif;
   --font-display: "Playfair Display", Georgia, serif;
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --shadow-soft: 0 18px 50px -24px oklch(0.29 0.03 50 / 0.45);
@@ -79,6 +80,12 @@
   --brand-sand: oklch(0.885 0.032 75);
   --brand-espresso: oklch(0.29 0.03 50);
   --champagne: oklch(0.855 0.04 88);
+  --hero-text: #fbf1e2;
+  --hero-eyebrow: #eac07c;
+  --hero-rule: #bc914e;
+  --hero-button: #b76439;
+  --hero-button-hover: #cc8e62;
+  --marquee-background: #38271e;
   --sidebar: oklch(0.974 0.009 85);
   --sidebar-foreground: oklch(0.27 0.028 50);
   --sidebar-primary: oklch(0.29 0.03 50);
@@ -156,6 +163,10 @@
   font-weight: 400;
 }
 
+@utility font-altaca {
+  font-family: var(--font-altaca);
+}
+
 @utility nav-link {
   font-size: 11px;
   letter-spacing: 0.16em;
@@ -179,6 +190,22 @@
   font-weight: 600;
 }
 
+.home-hero .hero-title {
+  color: var(--hero-text) !important;
+}
+
+.home-hero .eyebrow {
+  color: var(--hero-eyebrow) !important;
+}
+
+.home-hero .hero-rule {
+  background: linear-gradient(
+    90deg,
+    var(--hero-rule),
+    color-mix(in srgb, var(--hero-rule) 55%, transparent)
+  );
+}
+
 .hero-copy > *:nth-child(2) {
   animation-delay: 0.12s;
 }
@@ -193,6 +220,28 @@
 
 .hero-image {
   animation: hero-image-enter 1.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.hero-cover-image {
+  display: block;
+  width: 100%;
+  height: clamp(620px, 37.5vw, 768px);
+  object-fit: cover;
+  object-position: center center;
+  background-color: var(--primary);
+}
+
+.hero-panel-overlay {
+  background:
+    linear-gradient(
+      90deg,
+      oklch(0.19 0.035 45 / 0.94) 0%,
+      oklch(0.19 0.035 45 / 0.9) 22%,
+      oklch(0.19 0.035 45 / 0.5) 36%,
+      oklch(0.19 0.035 45 / 0.18) 48%,
+      transparent 68%
+    ),
+    linear-gradient(180deg, oklch(0.12 0.025 45 / 0.12), oklch(0.12 0.025 45 / 0.28));
 }
 
 .arch-frame {
@@ -317,10 +366,26 @@
   color: var(--primary-foreground);
 }
 
+.home-hero .hero-cta-button {
+  border-color: var(--hero-button) !important;
+  background-color: var(--hero-button) !important;
+  color: var(--hero-text) !important;
+}
+
+.home-hero .hero-cta-button:hover {
+  background-color: var(--hero-button-hover) !important;
+  color: var(--hero-text) !important;
+}
+
 .marquee-track {
   display: flex;
   width: max-content;
   animation: marquee-slide 28s linear infinite;
+}
+
+.marquee-section {
+  background-color: var(--marquee-background);
+  color: #ffffff;
 }
 
 .marquee-item {
@@ -333,7 +398,7 @@
   font-weight: 600;
   letter-spacing: 0.38em;
   text-transform: uppercase;
-  color: var(--muted-foreground);
+  color: #ffffff;
 }
 
 .product-card-stage {
@@ -347,7 +412,9 @@
   height: 100%;
   width: 100%;
   transform-style: preserve-3d;
-  transition: transform 1.05s cubic-bezier(0.2, 0.75, 0.2, 1), box-shadow 1.05s ease;
+  transition:
+    transform 1.05s cubic-bezier(0.2, 0.75, 0.2, 1),
+    box-shadow 1.05s ease;
 }
 
 .product-card:hover .product-card-inner,
@@ -431,6 +498,23 @@
 }
 
 @media (max-width: 1023px) {
+  .hero-cover-image {
+    height: clamp(560px, 74vw, 660px);
+    object-position: 46% center;
+  }
+
+  .hero-panel-overlay {
+    background:
+      linear-gradient(
+        90deg,
+        oklch(0.19 0.035 45 / 0.96) 0%,
+        oklch(0.19 0.035 45 / 0.82) 42%,
+        oklch(0.19 0.035 45 / 0.28) 72%,
+        transparent 100%
+      ),
+      linear-gradient(180deg, oklch(0.12 0.025 45 / 0.18), oklch(0.12 0.025 45 / 0.36));
+  }
+
   .hero-arch {
     min-height: clamp(520px, 80vw, 640px);
   }
@@ -464,6 +548,22 @@
 }
 
 @media (max-width: 640px) {
+  .hero-cover-image {
+    height: clamp(560px, 135vw, 650px);
+    object-position: 39% center;
+  }
+
+  .hero-panel-overlay {
+    background:
+      linear-gradient(
+        90deg,
+        oklch(0.19 0.035 45 / 0.98) 0%,
+        oklch(0.19 0.035 45 / 0.88) 58%,
+        oklch(0.19 0.035 45 / 0.46) 100%
+      ),
+      linear-gradient(180deg, oklch(0.12 0.025 45 / 0.18), oklch(0.12 0.025 45 / 0.42));
+  }
+
   .hero-arch {
     min-height: clamp(420px, 120vw, 520px);
   }

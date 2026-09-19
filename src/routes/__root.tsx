@@ -85,7 +85,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "HANS is an Abuja fashion house creating ready-to-wear, bespoke and exclusive African pieces for every occasion.",
       },
       { name: "author", content: "HANS" },
-      { property: "og:title", content: "HANS Apparel | Elegant African Fashion for Every Occasion" },
+      {
+        property: "og:title",
+        content: "HANS Apparel | Elegant African Fashion for Every Occasion",
+      },
       {
         property: "og:description",
         content: "Ready-to-wear, bespoke and exclusive pieces from Abuja, Nigeria.",
@@ -132,7 +135,7 @@ function RootComponent() {
       <StoreProvider>
         <Header />
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-        <main>
+        <main className="pt-[68px]">
           <Outlet />
         </main>
         <Footer />

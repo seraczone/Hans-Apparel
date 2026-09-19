@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Instagram, ProductCard, SectionHeading } from "@/components/storefront";
 import { Button } from "@/components/ui/button";
 import { brand, journalPosts, products, testimonials, whatsappUrl } from "@/data/store";
-import heroLady from "@/assets/hans-hero-foreground.png";
+import heroLady from "@/assets/hans-hero-showroom-repeat-8k.jpg";
 import houseModel from "@/assets/hans-house-foreground.png";
 import editorialModel from "@/assets/hans-look-blue-floral.jpg";
 import campaignVideo from "@/assets/hans-campaign-video.mp4";
@@ -19,7 +19,10 @@ export const Route = createFileRoute("/")({
         content:
           "Ready-to-wear, bespoke and exclusive African fashion, designed and tailored in Abuja, Nigeria. Order directly via WhatsApp.",
       },
-      { property: "og:title", content: "HANS Apparel | Elegant African Fashion for Every Occasion" },
+      {
+        property: "og:title",
+        content: "HANS Apparel | Elegant African Fashion for Every Occasion",
+      },
       {
         property: "og:description",
         content: "An Abuja fashion house for ready-to-wear, bespoke and exclusive pieces.",
@@ -37,12 +40,22 @@ const features = [
 ];
 
 const categories = [
-  { label: "Ready-to-Wear", copy: "Signature everyday elegance", image: categoryReady, span: "lg:col-span-2 lg:row-span-2" },
+  {
+    label: "Ready-to-Wear",
+    copy: "Signature everyday elegance",
+    image: categoryReady,
+    span: "lg:col-span-2 lg:row-span-2",
+  },
   { label: "Occasion Wear", copy: "For events that matter", image: categoryOccasion, span: "" },
   { label: "Bespoke", copy: "Made only for you", image: editorialModel, span: "" },
 ];
 
-const marqueeItems = ["Bespoke Tailoring", "Modest by Design", "Nationwide Shipping", "Atelier Appointments"];
+const marqueeItems = [
+  "Bespoke Tailoring",
+  "Modest by Design",
+  "Nationwide Shipping",
+  "Atelier Appointments",
+];
 
 function ArchImage({ src, alt, className = "" }: { src: string; alt: string; className?: string }) {
   return (
@@ -60,12 +73,18 @@ function Home() {
 
   return (
     <>
-      <section className="relative overflow-visible border-b border-border bg-background px-5 pt-16 pb-8 lg:px-10 lg:pt-24 lg:pb-10">
-        <div className="mx-auto grid max-w-[1440px] items-end gap-10 lg:grid-cols-[0.9fr_1.05fr] lg:gap-6">
-          <div className="hero-copy self-center max-sm:max-w-[350px]">
-            <p className="eyebrow">{brand.location} | Est. Fashion House</p>
+      <section className="home-hero relative isolate overflow-hidden border-b border-border bg-primary text-primary-foreground">
+        <img
+          src={heroLady}
+          alt="Woman wearing a gold floral HANS Apparel ready-to-wear look"
+          className="hero-cover-image"
+        />
+        <div className="hero-panel-overlay absolute inset-0" />
+        <div className="absolute inset-0 flex items-center px-5 py-12 sm:px-10 lg:py-16">
+          <div className="hero-copy relative z-10 w-full max-w-[660px] pl-[clamp(0rem,3vw,3rem)] max-sm:max-w-[350px]">
+            <p className="eyebrow text-brand-sand">{brand.location} | Est. Fashion House</p>
             <h1
-              className="hero-title mt-7 max-w-4xl font-display text-[clamp(2.8rem,7.4vw,7.1rem)] leading-[0.88] max-sm:text-[clamp(2.25rem,10vw,3rem)]"
+              className="hero-title mt-7 max-w-4xl font-altaca text-[clamp(3rem,6vw,6.8rem)] leading-[0.93] text-primary-foreground max-sm:text-[clamp(2.5rem,12vw,3.4rem)]"
               aria-label="Elegant African Fashion for Every Occasion"
             >
               <span className="block">Elegant</span>
@@ -74,28 +93,23 @@ function Home() {
               <span className="block">Every</span>
               <span className="block">Occasion</span>
             </h1>
-            <p className="mt-7 max-w-lg text-lg text-muted-foreground">
-              Ready-to-wear, bespoke and exclusive pieces for women, cut with structure and finished
-              with care in our Abuja atelier.
-            </p>
-            <div className="mt-9 flex flex-wrap gap-3 max-sm:max-w-[350px] max-sm:[&>a]:w-full">
-              <Button asChild size="lg" className="terracotta-button shine-button">
-                <Link to="/shop">Shop the collection</Link>
-              </Button>
-              <Button asChild size="lg" variant="outline" className="shine-button">
-                <Link to="/about">Book a fitting</Link>
+            <div className="hero-rule mt-8 h-px w-28" />
+            <div className="mt-8 flex flex-wrap gap-3 max-sm:max-w-[350px] max-sm:[&>a]:w-full">
+              <Button asChild size="lg" className="hero-cta-button shine-button">
+                <Link to="/shop">
+                  Shop the collection <ArrowRight />
+                </Link>
               </Button>
             </div>
           </div>
-          <ArchImage src={heroLady} alt="Woman wearing a HANS Apparel patterned kaftan" className="hero-arch" />
         </div>
       </section>
 
-      <section className="border-b border-border bg-background py-3">
+      <section className="marquee-section border-b border-border py-3">
         <div className="marquee-track">
           {[...marqueeItems, ...marqueeItems].map((item, index) => (
             <span key={`${item}-${index}`} className="marquee-item">
-              <span className="text-brand-accent">✦</span>
+              <span aria-hidden="true">*</span>
               {item}
             </span>
           ))}
@@ -104,7 +118,11 @@ function Home() {
 
       <section className="px-5 pt-12 pb-24 lg:px-10 lg:pt-14">
         <div className="mx-auto grid max-w-[1440px] gap-14 lg:grid-cols-2 lg:items-center">
-          <ArchImage src={houseModel} alt="Woman wearing a blue HANS Apparel ready-to-wear look" className="house-arch" />
+          <ArchImage
+            src={houseModel}
+            alt="Woman wearing a blue HANS Apparel ready-to-wear look"
+            className="house-arch"
+          />
           <div>
             <p className="eyebrow">The House</p>
             <h2 className="section-title mt-4">A quiet confidence, cut precisely</h2>
@@ -151,7 +169,11 @@ function Home() {
               <p className="mt-3 text-sm text-primary-foreground/75">
                 Limited silhouettes released in small numbers.
               </p>
-              <Button asChild variant="light" className="terracotta-button shine-button mt-6 self-start">
+              <Button
+                asChild
+                variant="light"
+                className="terracotta-button shine-button mt-6 self-start"
+              >
                 <Link to="/collections">View collections</Link>
               </Button>
             </div>
@@ -198,7 +220,11 @@ function Home() {
           <p className="mt-5 max-w-lg text-primary-foreground/85">
             Sculpted tailoring and fluid drape, photographed inside the warm world of HANS Apparel.
           </p>
-          <Button asChild variant="light" className="terracotta-button shine-button mt-8 self-start">
+          <Button
+            asChild
+            variant="light"
+            className="terracotta-button shine-button mt-8 self-start"
+          >
             <Link to="/collections">Explore the edit</Link>
           </Button>
         </div>
@@ -308,7 +334,12 @@ function Home() {
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             {products.slice(0, 4).map((p) => (
               <div key={p.id} className="group relative aspect-square overflow-hidden bg-secondary">
-                <img src={p.images[0]} alt="" loading="lazy" className="h-full w-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105" />
+                <img
+                  src={p.images[0]}
+                  alt=""
+                  loading="lazy"
+                  className="h-full w-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
+                />
                 <div className="absolute inset-0 grid place-items-center bg-primary/50 opacity-0 transition-opacity duration-700 group-hover:opacity-100">
                   <Instagram className="text-primary-foreground" />
                 </div>
@@ -324,7 +355,11 @@ function Home() {
           Message us on WhatsApp for sizing, availability or a bespoke commission.
         </p>
         <Button asChild size="lg" className="terracotta-button shine-button mt-8">
-          <a href={whatsappUrl("Hello HANS Apparel, I would like to place an order.")} target="_blank" rel="noreferrer">
+          <a
+            href={whatsappUrl("Hello HANS Apparel, I would like to place an order.")}
+            target="_blank"
+            rel="noreferrer"
+          >
             Order via WhatsApp
           </a>
         </Button>
