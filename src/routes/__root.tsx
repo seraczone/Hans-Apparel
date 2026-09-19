@@ -138,8 +138,10 @@ function RootComponent() {
       <StoreProvider>
         <Header />
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-        <main className="w-full min-w-0 pt-[68px]">
-          <Outlet />
+        <main className="block w-full min-w-0 max-w-full overflow-x-hidden pt-[68px]">
+          <div className="block w-full min-w-0 max-w-full">
+            <Outlet />
+          </div>
         </main>
         <Footer />
         <FloatingWhatsApp />
