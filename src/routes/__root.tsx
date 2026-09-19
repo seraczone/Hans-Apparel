@@ -77,7 +77,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   head: () => ({
     meta: [
       { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      {
+        name: "viewport",
+        content: "width=device-width, initial-scale=1, viewport-fit=cover",
+      },
       { title: "HANS Apparel | Elegant African Fashion for Every Occasion" },
       {
         name: "description",
@@ -119,7 +122,7 @@ function RootShell({ children }: { children: ReactNode }) {
       <head>
         <HeadContent />
       </head>
-      <body>
+      <body className="min-w-0 w-full overflow-x-hidden">
         {children}
         <Scripts />
       </body>
@@ -135,7 +138,7 @@ function RootComponent() {
       <StoreProvider>
         <Header />
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-        <main className="pt-[68px]">
+        <main className="w-full min-w-0 pt-[68px]">
           <Outlet />
         </main>
         <Footer />
